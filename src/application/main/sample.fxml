@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.main.Controller">
+   <top>
+      <VBox prefHeight="108.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="topLabel" prefHeight="66.0" prefWidth="599.0" text="Currency Converter">
+               <font>
+                  <Font size="35.0" />
+               </font>
+               <padding>
+                  <Insets bottom="20.0" right="10.0" top="10.0" />
+               </padding>
+            </Label>
+            <Label fx:id="header" prefHeight="59.0" prefWidth="600.0" />
+         </children>
+      </VBox>
+   </top>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXTextField focusColor="#9918a4" labelFloat="true" layoutX="3.0" layoutY="24.0" opacity="0.48" prefHeight="35.0" prefWidth="594.0" promptText="Enter Amount" unFocusColor="#83287a">
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </JFXTextField>
+            <Label layoutX="3.0" layoutY="74.0" prefHeight="27.0" prefWidth="170.0" text="From" />
+            <Label layoutX="324.0" layoutY="75.0" prefHeight="27.0" prefWidth="170.0" text="To" />
+            <JFXComboBox fx:id="fromSelector" layoutX="9.0" layoutY="123.0" prefHeight="26.0" prefWidth="193.0" />
+            <JFXComboBox fx:id="toSelector" layoutX="239.0" layoutY="122.0" prefHeight="26.0" prefWidth="193.0" />
+            <JFXButton layoutX="165.0" layoutY="182.0" prefHeight="38.0" prefWidth="110.0" text="Convert" />
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
