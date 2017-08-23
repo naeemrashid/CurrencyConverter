@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 
 import java.awt.event.MouseEvent;
@@ -41,7 +42,22 @@ public class Controller implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         list=getCountries();
         from.setItems(list);
+        from.getSelectionModel().select(0);
         to.setItems(list);
+        to.getSelectionModel().select(0);
+        from.addEventHandler(KeyEvent.KEY_PRESSED, e ->{
+            if (e.getCode().isLetterKey()){
+                System.out.println(e.getCode().getName());
+                for (Label item : list){
+                    if(item.getText().contains(e.getCode().getName())){
+                        from.getSelectionModel().select(item);
+                        break;
+                    }
+                }
+
+            }
+
+        });
 //        image.setGraphic(new ImageView(new Image("application/resources/img/currency-unfold.png")));
 //        topLabel.setId("label");
 //        Image image = new Image("application/resources/img/currency-unfold.png");
@@ -67,7 +83,7 @@ public class Controller implements Initializable{
         ObservableList<Label> countries = FXCollections.observableArrayList();
         for (String countryCode : locales) {
             Locale obj = new Locale("", countryCode);
-            Label country = new Label(obj.getCountry().toUpperCase());
+            Label country = new Label(obj.getCountry());
                 if (!obj.getCountry().toLowerCase().equals("an")){
                     Image icon = new Image("application/resources/icons/flags/4x3/"+obj.getCountry().toLowerCase()+".png");
                     country.setGraphic(new ImageView(icon));
