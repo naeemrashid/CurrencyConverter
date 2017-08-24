@@ -3,6 +3,7 @@ package application.main;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -24,13 +25,15 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable{
     @FXML
     private JFXTextField inputField;
-
+    @FXML
+    private Label error;
     @FXML
     private JFXComboBox<Label> from;
 
     @FXML
     private JFXComboBox<Label> to;
-
+    @FXML
+    private JFXButton sync;
     @FXML
     private JFXButton convertBtn;
 
@@ -42,9 +45,9 @@ public class Controller implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         list=getCountries();
         from.setItems(list);
-        from.getSelectionModel().select(0);
+//        from.getSelectionModel().select(0);
         to.setItems(list);
-        to.getSelectionModel().select(0);
+//        to.getSelectionModel().select(0);
         from.addEventHandler(KeyEvent.KEY_PRESSED, e ->{
             if (e.getCode().isLetterKey()){
                 System.out.println(e.getCode().getName());
@@ -57,6 +60,10 @@ public class Controller implements Initializable{
 
             }
 
+        });
+        sync.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, e->{
+            System.out.println("Here goes the data fetch code.");
+            error.setText("unable to fetch latest data. check your internet connection.");
         });
 //        image.setGraphic(new ImageView(new Image("application/resources/img/currency-unfold.png")));
 //        topLabel.setId("label");
@@ -83,7 +90,7 @@ public class Controller implements Initializable{
         ObservableList<Label> countries = FXCollections.observableArrayList();
         for (String countryCode : locales) {
             Locale obj = new Locale("", countryCode);
-            Label country = new Label(obj.getCountry());
+            Label country = new Label(obj.getDisplayCountry());
                 if (!obj.getCountry().toLowerCase().equals("an")){
                     Image icon = new Image("application/resources/icons/flags/4x3/"+obj.getCountry().toLowerCase()+".png");
                     country.setGraphic(new ImageView(icon));
