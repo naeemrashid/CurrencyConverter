@@ -10,69 +10,70 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="604.0" prefWidth="461.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.main.Controller">
-   <top>
-      <VBox style="-fx-background-color: #9D7052;" BorderPane.alignment="CENTER">
-         <children>
-            <HBox spacing="130.0">
+
+<StackPane fx:id="pane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.main.Controller">
+   <children>
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="604.0" prefWidth="461.0">
+         <top>
+            <VBox style="-fx-background-color: #9D7052;" BorderPane.alignment="CENTER">
                <children>
-                  <Label text="Currency Converter" textAlignment="CENTER" textFill="WHITE">
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </padding>
-                     <font>
-                        <Font size="22.0" />
-                     </font>
-                  </Label>
-                  <JFXButton fx:id="sync" alignment="BASELINE_RIGHT" buttonType="RAISED" opacity="0.91" ripplerFill="WHITE">
-                     <HBox.margin>
-                        <Insets top="10.0" />
-                     </HBox.margin>
-                     <graphic>
-                        <MaterialIconView fill="WHITE" glyphName="SYNC" size="30.0" />
-                     </graphic>
-                  </JFXButton>
+                  <HBox spacing="130.0">
+                     <children>
+                        <Label text="Currency Converter" textAlignment="CENTER" textFill="WHITE">
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Label>
+                        <JFXButton fx:id="sync" alignment="BASELINE_RIGHT" buttonType="RAISED" opacity="0.91" ripplerFill="WHITE">
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin>
+                           <graphic>
+                              <MaterialIconView fill="WHITE" glyphName="SYNC" size="30.0" />
+                           </graphic>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <ImageView fitHeight="168.0" fitWidth="494.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/img/currency-book.jpg" />
+                     </image>
+                  </ImageView>
                </children>
-            </HBox>
-            <ImageView fitHeight="168.0" fitWidth="494.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../resources/img/currency-book.jpg" />
-               </image>
-            </ImageView>
-         </children>
-      </VBox>
-   </top>
-   <center>
-      <VBox spacing="30.0" BorderPane.alignment="CENTER">
-         <children>
-            <JFXTextField fx:id="inputField" focusColor="#9d7052" labelFloat="true" prefHeight="31.0" prefWidth="441.0" promptText="Enter Amount" unFocusColor="#9d7052">
-               <VBox.margin>
-                  <Insets top="30.0" />
-               </VBox.margin>
-            </JFXTextField>
-            <JFXComboBox fx:id="from" focusColor="#9d7052" prefHeight="26.0" prefWidth="442.0" promptText="From Country" unFocusColor="#9d7052" />
-            <JFXComboBox fx:id="to" focusColor="#9d7052" prefHeight="26.0" prefWidth="440.0" promptText="To Country" unFocusColor="#9d7052" />
-            <JFXButton fx:id="convertBtn" buttonType="RAISED" prefHeight="45.0" prefWidth="112.0" style="-fx-background-color: #9D7052;" text="CONVERT" textFill="WHITE">
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin>
-            </JFXButton>
-            <Label fx:id="result" prefHeight="24.0" prefWidth="90.0" text="Label" textFill="#9d7052">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <Label fx:id="error" prefHeight="16.0" prefWidth="445.0" textFill="#f50202" />
-         </children>
-         <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </BorderPane.margin>
-      </VBox>
-   </center>
-</BorderPane>
+            </VBox>
+         </top>
+         <center>
+            <VBox spacing="30.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXTextField fx:id="inputField" focusColor="#9d7052" labelFloat="true" prefHeight="31.0" prefWidth="441.0" promptText="Enter Amount" unFocusColor="#9d7052">
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXComboBox fx:id="from" focusColor="#9d7052" prefHeight="26.0" prefWidth="442.0" promptText="From Country" unFocusColor="#9d7052" />
+                  <JFXComboBox fx:id="to" focusColor="#9d7052" prefHeight="26.0" prefWidth="440.0" promptText="To Country" unFocusColor="#9d7052" />
+                  <JFXButton fx:id="convertBtn" buttonType="RAISED" prefHeight="45.0" prefWidth="112.0" style="-fx-background-color: #9D7052;" text="CONVERT" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </JFXButton>
+                  <Label fx:id="error" prefHeight="16.0" prefWidth="445.0" textFill="#f50202" />
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </BorderPane.margin>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+</StackPane>

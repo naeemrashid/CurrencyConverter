@@ -38,7 +38,7 @@ public class Controller implements Initializable{
     private JFXButton convertBtn;
 
     @FXML
-    private Label result;
+    private StackPane pane;
 
     private ObservableList<Label> list = FXCollections.observableArrayList();
     @Override
