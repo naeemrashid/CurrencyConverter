@@ -23,6 +23,11 @@ import java.util.Locale;
 import java.util.Observable;
 import java.util.ResourceBundle;
 
+/**
+ *
+ * @author Naeem Rashid
+ *
+ */
 public class Controller implements Initializable{
     @FXML
     private JFXTextField inputField;
@@ -96,6 +101,8 @@ public class Controller implements Initializable{
 
     public void showDialog(String heading,String body,StackPane stackPane){
         JFXButton cancel = new JFXButton("Cancel");
+        cancel.setPrefSize(112,35);
+        cancel.setStyle("-fx-background-color:#9D7052; -fx-text-fill:#ffff");
         JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text(heading));
         content.setBody(new Text(body));
