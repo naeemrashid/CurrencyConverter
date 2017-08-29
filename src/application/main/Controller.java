@@ -1,11 +1,11 @@
 package application.main;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -45,9 +46,7 @@ public class Controller implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         list=getCountries();
         from.setItems(list);
-//        from.getSelectionModel().select(0);
         to.setItems(list);
-//        to.getSelectionModel().select(0);
         from.addEventHandler(KeyEvent.KEY_PRESSED, e ->{
             if (e.getCode().isLetterKey()){
                 System.out.println(e.getCode().getName());
@@ -65,21 +64,10 @@ public class Controller implements Initializable{
             System.out.println("Here goes the data fetch code.");
             error.setText("unable to fetch latest data. check your internet connection.");
         });
-//        image.setGraphic(new ImageView(new Image("application/resources/img/currency-unfold.png")));
-//        topLabel.setId("label");
-//        Image image = new Image("application/resources/img/currency-unfold.png");
-//        ImageView imageView = new ImageView(image);
-//        header.setGraphic(imageView);
-//        ObservableList<String> list =getCountries();
-//        fromSelector.setItems(list);
-//        fromSelector.getSelectionModel().select(0);
-//        Label label = new Label("testing");
-//        label.setGraphic(new ImageView(new Image("application/resources/icons/flags/4x3/ae.svg")));
-//        borderPane.setBottom(label);
-//        refresh.setGraphic(new ImageView(new Image("application/resources/img/refresh36x36.png")));
-//
-
-
+        convertBtn.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED , e->{
+            showDialog("Currency Conversion Information \n","Converted Amount from "+from.getSelectionModel().getSelectedItem().getText()+
+                    "\n to "+to.getSelectionModel().getSelectedItem().getText()+" \n amount ",pane);
+        });
 
     }
 
@@ -106,6 +94,21 @@ public class Controller implements Initializable{
 
     }
 
+    public void showDialog(String heading,String body,StackPane stackPane){
+        JFXButton cancel = new JFXButton("Cancel");
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text(heading));
+        content.setBody(new Text(body));
+        content.setActions(cancel);
+        JFXDialog dialog= new JFXDialog(stackPane,content, JFXDialog.DialogTransition.CENTER);
+        dialog.show();
+        cancel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                dialog.close();
 
+            }
+        });
+    }
 
 }
