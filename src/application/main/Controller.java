@@ -1,7 +1,7 @@
 package application.main;
 
+import com.google.gson.Gson;
 import com.jfoenix.controls.*;
-import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,14 +14,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import jdk.nashorn.internal.parser.JSONParser;
 
-import java.awt.event.MouseEvent;
-import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Observable;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  *
@@ -49,9 +45,12 @@ public class Controller implements Initializable{
     private ObservableList<Label> list = FXCollections.observableArrayList();
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         list=getCountries();
         from.setItems(list);
         to.setItems(list);
+
+
         from.addEventHandler(KeyEvent.KEY_PRESSED, e ->{
             if (e.getCode().isLetterKey()){
                 System.out.println(e.getCode().getName());
@@ -67,6 +66,7 @@ public class Controller implements Initializable{
         });
         sync.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, e->{
             System.out.println("Here goes the data fetch code.");
+            if(error.getText().isEmpty())
             error.setText("unable to fetch latest data. check your internet connection.");
         });
         convertBtn.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED , e->{
