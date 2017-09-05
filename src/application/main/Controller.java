@@ -2,6 +2,14 @@ package application.main;
 
 import com.google.gson.Gson;
 import com.jfoenix.controls.*;
+import com.jfoenix.validation.DoubleValidator;
+import com.jfoenix.validation.NumberValidator;
+import com.jfoenix.validation.RequiredFieldValidator;
+import com.jfoenix.validation.base.ValidatorBase;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -49,7 +57,25 @@ public class Controller implements Initializable{
         list=getCountries();
         from.setItems(list);
         to.setItems(list);
+        from.getStyleClass().add("combo-box");
+        to.getStyleClass().add("combo-box");
+        inputField.getStyleClass().add("input-field");
 
+        RequiredFieldValidator validator = new RequiredFieldValidator();
+        DoubleValidator doubleValidator = new DoubleValidator();
+        validator.setMessage("Enter numeric value. Field is empty");
+        doubleValidator.setMessage("Enter Numeric value");
+        inputField.getValidators().addAll(validator,doubleValidator);
+
+
+//        inputField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+//                if (!newValue){
+//                    inputField.validate();
+//                }
+//            }
+//        });
 
         from.addEventHandler(KeyEvent.KEY_PRESSED, e ->{
             if (e.getCode().isLetterKey()){
@@ -64,15 +90,22 @@ public class Controller implements Initializable{
             }
 
         });
+
         sync.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, e->{
             System.out.println("Here goes the data fetch code.");
             if(error.getText().isEmpty())
             error.setText("unable to fetch latest data. check your internet connection.");
         });
         convertBtn.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED , e->{
-            showDialog("Currency Conversion Information \n","Converted Amount from "+from.getSelectionModel().getSelectedItem().getText()+
-                    "\n to "+to.getSelectionModel().getSelectedItem().getText()+" \n amount ",pane);
+            if (inputField.validate()){
+                showDialog("Currency Conversion Information \n","Converted Amount from "+from.getSelectionModel().getSelectedItem().getText()+
+                        "\n to "+to.getSelectionModel().getSelectedItem().getText()+" \n amount ",pane);
+            }else {
+                System.out.println("validation failed");
+            }
+
         });
+
 
     }
 
@@ -102,7 +135,7 @@ public class Controller implements Initializable{
     public void showDialog(String heading,String body,StackPane stackPane){
         JFXButton cancel = new JFXButton("Cancel");
         cancel.setPrefSize(112,35);
-        cancel.setStyle("-fx-background-color:#9D7052; -fx-text-fill:#ffff");
+        cancel.getStyleClass().add("cancel-btn");
         JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text(heading));
         content.setBody(new Text(body));
@@ -117,5 +150,6 @@ public class Controller implements Initializable{
             }
         });
     }
+
 
 }
