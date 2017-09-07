@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <StackPane fx:id="pane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.main.Controller">
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="604.0" prefWidth="461.0">
@@ -74,6 +73,9 @@
                </BorderPane.margin>
             </VBox>
          </center>
+         <bottom>
+            <Label fx:id="autoFill" prefHeight="36.0" prefWidth="458.0" text="Label" BorderPane.alignment="CENTER" />
+         </bottom>
       </BorderPane>
    </children>
 </StackPane>

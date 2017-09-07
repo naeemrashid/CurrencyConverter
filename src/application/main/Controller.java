@@ -11,14 +11,17 @@ import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
@@ -33,7 +36,9 @@ import java.util.*;
  *
  */
 public class Controller implements Initializable{
-
+    private  String s="";
+    @FXML
+    private Label autoFill;
     @FXML
     private JFXTextField inputField;
     @FXML
@@ -59,7 +64,7 @@ public class Controller implements Initializable{
             Locale l = new Locale("", iso);
             countries.put(l.getDisplayCountry(), iso);
         }
-
+        autoFill.setVisible(false);
         list=getCountries();
         from.setItems(list);
         to.setItems(list);
@@ -83,16 +88,35 @@ public class Controller implements Initializable{
 //            }
 //        });
 
-        from.addEventHandler(KeyEvent.KEY_PRESSED, e ->{
-            if (e.getCode().isLetterKey()){
-                System.out.println(e.getCode().getName());
-                for (Label item : list){
-                    if(item.getText().contains(e.getCode().getName())){
-                        from.getSelectionModel().select(item);
-                        break;
-                    }
-                }
 
+        from.addEventHandler(KeyEvent.KEY_PRESSED, e ->{
+            autoFill.setVisible(true);
+            if( e.getCode() == KeyCode.BACK_SPACE) {
+                if (s.length() > 0) {
+                    s = s.substring( 0, s.length() - 1 );
+                }
+            }
+            else s += e.getText();
+            autoFill.setText(s);
+            System.out.println(s);
+            for( Label item: list ) {
+                if( item.getText().startsWith(s) )
+                    from.getSelectionModel().select( item );
+            }
+
+        });
+        to.addEventHandler(KeyEvent.KEY_PRESSED, e ->{
+            autoFill.setVisible(true);
+            if( e.getCode() == KeyCode.BACK_SPACE){
+                if (s.length()>0)
+                s = s.substring( 0, s.length() - 1 );
+            }
+
+            else s += e.getText();
+            autoFill.setText(s);
+            for( Label item: list ) {
+                if( item.getText().startsWith(s) )
+                    to.getSelectionModel().select( item );
             }
 
         });
