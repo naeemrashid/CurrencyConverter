@@ -9,24 +9,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class CurrencyConvert {
-    private static final String API_PROVIDER = "http://api.fixer.io/";
+    private static final String API_PROVIDER = "http://api.fixer.io";
     public  double convert(String fromCurrencyCode, String toCurrencyCode) {
-
-        if ((fromCurrencyCode != null && !fromCurrencyCode.isEmpty())
-                && (toCurrencyCode != null && !toCurrencyCode.isEmpty())) {
-
             FixerResponse response = getResponse(API_PROVIDER+"/latest?base="+fromCurrencyCode);
-
             if(response != null) {
-
                 String rate = response.getRates().get(toCurrencyCode);
 
                 double conversionRate = Double.valueOf((rate != null)?rate:"0.0");
 
                 return conversionRate;
             }
-
-        }
 
         return 0.0;
     }
@@ -73,8 +65,8 @@ public class CurrencyConvert {
 
         } catch (IOException e) {
 
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            System.out.println("Unavailable data for this country"+e.getMessage());
+//            e.printStackTrace();
         }
 
         return response;

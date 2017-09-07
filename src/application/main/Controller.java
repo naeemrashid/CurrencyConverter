@@ -60,6 +60,7 @@ public class Controller implements Initializable{
     private ObservableList<Label> list = FXCollections.observableArrayList();
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        CurrencyConvert convert = new CurrencyConvert();
         Map<String, String> countries = new HashMap<>();
         for (String iso : Locale.getISOCountries()) {
             Locale l = new Locale("", iso);
@@ -125,12 +126,12 @@ public class Controller implements Initializable{
 
         sync.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, e->{
             System.out.println("Here goes the data fetch code.");
-            String  fromCurrency=Currency.getInstance(new Locale("",countries.get(from.getSelectionModel().getSelectedItem().getText()))).getCurrencyCode();
-            String toCurrency=Currency.getInstance(new Locale("",countries.get(to.getSelectionModel().getSelectedItem().getText()))).getCurrencyCode();
-            CurrencyConvert convert = new CurrencyConvert();
-            System.out.println(convert.convert("USD","CNY"));
-            System.out.println("from code "+fromCurrency+" to code "+toCurrency);
-            error.setText("unable to fetch latest data. check your internet connection.");
+            if (from.getSelectionModel().getSelectedIndex()!=-1){
+                String  fromCurrency=Currency.getInstance(new Locale("",countries.get(from.getSelectionModel().getSelectedItem().getText()))).getCurrencyCode();
+            }else {
+                error.setText("Please select the from country.");
+            }
+
         });
 
 
@@ -140,10 +141,16 @@ public class Controller implements Initializable{
                 String toCountry = to.getSelectionModel().getSelectedItem().getText();
                 String fromCurrency = Currency.getInstance(new Locale("",countries.get(fromCountry))).getCurrencyCode();
                 String toCurrency  = Currency.getInstance(new Locale("",countries.get(toCountry))).getCurrencyCode();
-                CurrencyConvert convert = new CurrencyConvert();
-                System.out.println(convert.convert("USD","CNY"));
-                showDialog("Currency Conversion Information \n","Converted Amount from "+from.getSelectionModel().getSelectedItem().getText()+
-                        "\n to "+to.getSelectionModel().getSelectedItem().getText()+" \n amount ",pane);
+                Thread thread = new Thread(  new Runnable() {
+                    @Override
+                    public void run() {
+                        double rate = convert.convert(fromCurrency,toCurrency);
+                        rate = rate * Double.parseDouble(inputField.getText());
+                        showDialog("Currency Conversion Information \n","Converted Amount from "+from.getSelectionModel().getSelectedItem().getText()+
+                                "\n to "+to.getSelectionModel().getSelectedItem().getText()+" \n amount "+rate,pane);
+                    }
+                });
+                thread.run();
             } else {
                 error.setText("Something went wrong fill the input correctly.");
 
