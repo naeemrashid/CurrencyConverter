@@ -19,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -71,6 +72,7 @@ public class Controller implements Initializable{
         from.getStyleClass().add("combo-box");
         to.getStyleClass().add("combo-box");
         inputField.getStyleClass().add("input-field");
+        sync.setTooltip(new Tooltip("Fetch latest data from fixer.io"));
 
         RequiredFieldValidator validator = new RequiredFieldValidator();
         DoubleValidator doubleValidator = new DoubleValidator();
@@ -123,23 +125,30 @@ public class Controller implements Initializable{
 
         sync.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, e->{
             System.out.println("Here goes the data fetch code.");
-            if(error.getText().isEmpty())
+            String  fromCurrency=Currency.getInstance(new Locale("",countries.get(from.getSelectionModel().getSelectedItem().getText()))).getCurrencyCode();
+            String toCurrency=Currency.getInstance(new Locale("",countries.get(to.getSelectionModel().getSelectedItem().getText()))).getCurrencyCode();
+            CurrencyConvert convert = new CurrencyConvert();
+            System.out.println(convert.convert("USD","CNY"));
+            System.out.println("from code "+fromCurrency+" to code "+toCurrency);
             error.setText("unable to fetch latest data. check your internet connection.");
         });
+
+
         convertBtn.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED , e->{
-          String  fromCurrency=Currency.getInstance(new Locale("",countries.get(from.getSelectionModel().getSelectedItem().getText()))).getCurrencyCode();
-          String toCurrency=Currency.getInstance(new Locale("",countries.get(to.getSelectionModel().getSelectedItem().getText()))).getCurrencyCode();
-
-          CurrencyConvert convert = new CurrencyConvert();
-            System.out.println(convert.convert("USD","CNY"));
-
-            System.out.println("from code "+fromCurrency+" to code "+toCurrency);
-            if (inputField.validate()){
+            if (validateInput()){
+                String fromCountry = from.getSelectionModel().getSelectedItem().getText();
+                String toCountry = to.getSelectionModel().getSelectedItem().getText();
+                String fromCurrency = Currency.getInstance(new Locale("",countries.get(fromCountry))).getCurrencyCode();
+                String toCurrency  = Currency.getInstance(new Locale("",countries.get(toCountry))).getCurrencyCode();
+                CurrencyConvert convert = new CurrencyConvert();
+                System.out.println(convert.convert("USD","CNY"));
                 showDialog("Currency Conversion Information \n","Converted Amount from "+from.getSelectionModel().getSelectedItem().getText()+
                         "\n to "+to.getSelectionModel().getSelectedItem().getText()+" \n amount ",pane);
-            }else {
-                System.out.println("validation failed");
-            }
+            } else {
+                error.setText("Something went wrong fill the input correctly.");
+
+                }
+
 
         });
 
@@ -199,4 +208,12 @@ public class Controller implements Initializable{
     }
 
 
+    private boolean validateInput(){
+        if (inputField.validate()){
+            if (from.getSelectionModel().getSelectedIndex()!=-1 && to.getSelectionModel().getSelectedIndex()!=-1){
+                return true;
+            }
+        }
+        return false;
+    }
 }

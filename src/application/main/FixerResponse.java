@@ -1,9 +1,10 @@
 package application.main;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class FixerResponse {
+public class FixerResponse implements Serializable{
     private String base;
     private String date;
 
