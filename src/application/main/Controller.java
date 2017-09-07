@@ -33,6 +33,7 @@ import java.util.*;
  *
  */
 public class Controller implements Initializable{
+
     @FXML
     private JFXTextField inputField;
     @FXML
@@ -53,6 +54,11 @@ public class Controller implements Initializable{
     private ObservableList<Label> list = FXCollections.observableArrayList();
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Map<String, String> countries = new HashMap<>();
+        for (String iso : Locale.getISOCountries()) {
+            Locale l = new Locale("", iso);
+            countries.put(l.getDisplayCountry(), iso);
+        }
 
         list=getCountries();
         from.setItems(list);
@@ -97,6 +103,13 @@ public class Controller implements Initializable{
             error.setText("unable to fetch latest data. check your internet connection.");
         });
         convertBtn.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED , e->{
+          String  fromCurrency=Currency.getInstance(new Locale("",countries.get(from.getSelectionModel().getSelectedItem().getText()))).getCurrencyCode();
+          String toCurrency=Currency.getInstance(new Locale("",countries.get(to.getSelectionModel().getSelectedItem().getText()))).getCurrencyCode();
+
+          CurrencyConvert convert = new CurrencyConvert();
+            System.out.println(convert.convert("USD","CNY"));
+
+            System.out.println("from code "+fromCurrency+" to code "+toCurrency);
             if (inputField.validate()){
                 showDialog("Currency Conversion Information \n","Converted Amount from "+from.getSelectionModel().getSelectedItem().getText()+
                         "\n to "+to.getSelectionModel().getSelectedItem().getText()+" \n amount ",pane);
@@ -115,12 +128,22 @@ public class Controller implements Initializable{
         String[] locales = Locale.getISOCountries();
         ObservableList<Label> countries = FXCollections.observableArrayList();
         for (String countryCode : locales) {
-            Locale obj = new Locale("", countryCode);
+            Locale obj = new Locale("EN", countryCode);
             Label country = new Label(obj.getDisplayCountry());
                 if (!obj.getCountry().toLowerCase().equals("an")){
                     Image icon = new Image("application/resources/icons/flags/4x3/"+obj.getCountry().toLowerCase()+".png");
                     country.setGraphic(new ImageView(icon));
                     countries.add(country);
+//                    try {
+//                        System.out.println("Country Currency "+Currency.getInstance(obj).getCurrencyCode());
+//                    }catch (NullPointerException ex){
+////                        System.out.println("Country "+obj.getDisplayCountry());
+//                        if (obj.getDisplayCountry().equals("Antarctica")){
+//                            System.out.println("Country Currency EDD");
+//                        }
+//
+//                    }
+
                 }
 
 
