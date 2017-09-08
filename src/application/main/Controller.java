@@ -6,6 +6,7 @@ import com.jfoenix.validation.DoubleValidator;
 import com.jfoenix.validation.NumberValidator;
 import com.jfoenix.validation.RequiredFieldValidator;
 import com.jfoenix.validation.base.ValidatorBase;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
@@ -24,6 +25,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import jdk.nashorn.internal.parser.JSONParser;
@@ -42,6 +44,7 @@ public class Controller implements Initializable{
     private Label autoFill;
     @FXML
     private JFXTextField inputField;
+
     @FXML
     private Label error;
     @FXML
@@ -60,13 +63,14 @@ public class Controller implements Initializable{
     private ObservableList<Label> list = FXCollections.observableArrayList();
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        CurrencyConvert convert = new CurrencyConvert();
+        CurrencyConvert convert = new CurrencyConvert(this);
         Map<String, String> countries = new HashMap<>();
         for (String iso : Locale.getISOCountries()) {
             Locale l = new Locale("", iso);
             countries.put(l.getDisplayCountry(), iso);
         }
         autoFill.setVisible(false);
+        autoFill.getStyleClass().add("auto-fill");
         list=getCountries();
         from.setItems(list);
         to.setItems(list);
@@ -123,11 +127,21 @@ public class Controller implements Initializable{
             }
 
         });
+        to.addEventHandler(MouseEvent.MOUSE_CLICKED , event -> {
+            s="";
+
+        });
+        from.addEventHandler(MouseEvent.MOUSE_CLICKED,event -> {
+            s="";
+        });
 
         sync.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, e->{
+            error.setText("");
+            autoFill.setVisible(false);
             System.out.println("Here goes the data fetch code.");
             if (from.getSelectionModel().getSelectedIndex()!=-1){
                 String  fromCurrency=Currency.getInstance(new Locale("",countries.get(from.getSelectionModel().getSelectedItem().getText()))).getCurrencyCode();
+                convert.refresh(fromCurrency);
             }else {
                 error.setText("Please select the from country.");
             }
@@ -136,12 +150,14 @@ public class Controller implements Initializable{
 
 
         convertBtn.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED , e->{
+            error.setText("");
+            autoFill.setVisible(false);
             if (validateInput()){
                 String fromCountry = from.getSelectionModel().getSelectedItem().getText();
                 String toCountry = to.getSelectionModel().getSelectedItem().getText();
                 String fromCurrency = Currency.getInstance(new Locale("",countries.get(fromCountry))).getCurrencyCode();
                 String toCurrency  = Currency.getInstance(new Locale("",countries.get(toCountry))).getCurrencyCode();
-                Thread thread = new Thread(  new Runnable() {
+                Platform.runLater( new Runnable() {
                     @Override
                     public void run() {
                         double rate = convert.convert(fromCurrency,toCurrency);
@@ -150,7 +166,6 @@ public class Controller implements Initializable{
                                 "\n to "+to.getSelectionModel().getSelectedItem().getText()+" \n amount "+rate,pane);
                     }
                 });
-                thread.run();
             } else {
                 error.setText("Something went wrong fill the input correctly.");
 
@@ -222,5 +237,12 @@ public class Controller implements Initializable{
             }
         }
         return false;
+    }
+    public Label getError() {
+        return error;
+    }
+
+    public void setError(Label error) {
+        this.error = error;
     }
 }

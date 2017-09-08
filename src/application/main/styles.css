@@ -16,3 +16,9 @@ BorderPane{
 -fx-background-color:#9D7052;
 -fx-text-fill:#ffff
 }
+.auto-fill{
+-fx-font-size: 14px;
+-fx-font-weight: bold;
+-fx-text-fill: #006600;
+-fx-background-color: #e6ffe6;
+}
