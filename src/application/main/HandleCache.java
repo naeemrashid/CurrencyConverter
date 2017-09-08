@@ -50,19 +50,5 @@ public class HandleCache {
         }
         return null;
     }
-    public static void main(String[] args){
-        HandleCache cache = new HandleCache();
-        try {
-            FixerResponse response = new FixerResponse();
-            response.setBase("USD");
-            FixerResponse response2 = new FixerResponse();
-            response2.setBase("PKR");
-            cache.writeObj(response);
-            cache.writeObj(response2);
-            System.out.println(cache.readObject("PKR").getBase());
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
 
-    }
 }

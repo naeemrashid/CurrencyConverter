@@ -7,9 +7,17 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Locale;
 
 public class CurrencyConvert {
+    private Controller controller;
+
+    public CurrencyConvert(Controller controller){
+        this.controller = controller;
+    }
 
 
 
@@ -21,6 +29,7 @@ public class CurrencyConvert {
         if (cached != null) {
             String rate = cached.getRates().get(toCurrencyCode);
             double conversionRate = Double.valueOf((rate != null) ? rate : "0.0");
+            System.out.println("Got from cache !!!!");
             return conversionRate;
 
         }else {
@@ -35,6 +44,19 @@ public class CurrencyConvert {
 
 
         return 0.0;
+    }
+    public void refresh(String fromCurrencyCode){
+        FixerResponse response = getResponse(API_PROVIDER + "/latest?base=" + fromCurrencyCode);
+        if (response != null) {
+            FixerResponse cached = handleCache.findInArray(fromCurrencyCode);
+            if (cached!=null){
+             cached.setBase(response.getBase());
+             cached.setDate(response.getDate());
+             cached.setRates(response.getRates());
+            }else {
+                handleCache.getCachedList().add(response);
+            }
+        }
     }
 
     // Method to get the response from API
@@ -77,9 +99,14 @@ public class CurrencyConvert {
             System.out.println(e.getMessage());
             e.printStackTrace();
 
+        }catch (UnknownHostException ex){
+            controller.getError().setText("unable to fetch data check your internet connection.");
+
         } catch (IOException e) {
 
-            System.out.println("Unavailable data for this country"+e.getMessage());
+            System.out.println("Unavailable data for this country's currency");
+            controller.getError().setText("Unavailable data for this country's currency");
+
 //            e.printStackTrace();
         }
 

@@ -58,3 +58,5 @@ release.properties
 pom.xml.releaseBackup
 pom.xml.tag
 /src/application/main/recent.cache
+/out/
+
