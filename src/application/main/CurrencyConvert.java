@@ -7,18 +7,32 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class CurrencyConvert {
+
+
+
     private static final String API_PROVIDER = "http://api.fixer.io";
+    private HandleCache handleCache = new HandleCache();
     public  double convert(String fromCurrencyCode, String toCurrencyCode) {
-            FixerResponse response = getResponse(API_PROVIDER+"/latest?base="+fromCurrencyCode);
-            if(response != null) {
+
+        FixerResponse cached = handleCache.findInArray(fromCurrencyCode);
+        if (cached != null) {
+            String rate = cached.getRates().get(toCurrencyCode);
+            double conversionRate = Double.valueOf((rate != null) ? rate : "0.0");
+            return conversionRate;
+
+        }else {
+            FixerResponse response = getResponse(API_PROVIDER + "/latest?base=" + fromCurrencyCode);
+            if (response != null) {
+                handleCache.getCachedList().add(response);
                 String rate = response.getRates().get(toCurrencyCode);
-
-                double conversionRate = Double.valueOf((rate != null)?rate:"0.0");
-
+                double conversionRate = Double.valueOf((rate != null) ? rate : "0.0");
                 return conversionRate;
             }
+        }
+
 
         return 0.0;
     }
