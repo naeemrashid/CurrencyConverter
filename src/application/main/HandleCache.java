@@ -5,8 +5,12 @@ import java.util.ArrayList;
 
 public class HandleCache {
 
-    private ArrayList<FixerResponse> cachedList = new ArrayList<>();
+    private ArrayList<FixerResponse> cachedList ;
 
+    public HandleCache(){
+        cachedList = new ArrayList<>();
+
+    }
     public ArrayList<FixerResponse> getCachedList() {
         return cachedList;
     }
@@ -14,6 +18,7 @@ public class HandleCache {
     public void setCachedList(ArrayList<FixerResponse> cachedList) {
         this.cachedList = cachedList;
     }
+
     public FixerResponse findInArray(String base){
         for (FixerResponse item : cachedList){
             if (item.getBase().equals(base)){
@@ -23,13 +28,21 @@ public class HandleCache {
         return null;
     }
     public void writeObj(FixerResponse obj) throws FileNotFoundException , IOException{
-        ObjectOutputStream oos= new ObjectOutputStream(new FileOutputStream("recent.cache",true));
+        File file = new File("recent.cache");
+        if (!file.exists()){
+            file.createNewFile();
+        }
+        ObjectOutputStream oos= new ObjectOutputStream(new FileOutputStream(file));
         oos.writeObject(obj);
         oos.close();
 
     }
     public FixerResponse readObject(String base)throws FileNotFoundException , IOException,ClassNotFoundException{
-        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("recent.cache"));
+        File file = new File("recent.cache");
+        if (!file.exists()){
+            file.createNewFile();
+        }
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
         FixerResponse obj = (FixerResponse) ois.readObject();
         ois.close();
         if(obj.getBase().equals(base)){
