@@ -13,3 +13,5 @@ Currency Converter is a utility to convert currency rates to and from  several c
 #### Contribute
 + [Clone](https://github.com/naeemkhan12/CurrencyConverter.git) the project , use it , find and report bugs.
 + Clone the project by creating new branch with name of the feature you want to build , add the features and send a pull request.
+#### Download
+[Download](https://github.com/naeemkhan12/CurrencyConverter/releases) the App and ***enjoy.
